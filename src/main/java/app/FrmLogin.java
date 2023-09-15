@@ -29,6 +29,7 @@ public class FrmLogin extends JFrame {
 
 	private JPanel contentPane;
 	private JTextField txtUsuario;
+
 	/**
 	 * Launch the application.
 	 */
@@ -64,34 +65,46 @@ public class FrmLogin extends JFrame {
 		});
 		btnNewButton.setBounds(324, 29, 89, 23);
 		contentPane.add(btnNewButton);
-		
+
 		txtUsuario = new JTextField();
 		txtUsuario.setBounds(122, 30, 161, 20);
 		contentPane.add(txtUsuario);
 		txtUsuario.setColumns(10);
-		
+
 		JLabel lblNewLabel = new JLabel("Usuario :");
 		lblNewLabel.setBounds(10, 33, 102, 14);
 		contentPane.add(lblNewLabel);
-		
+
 		JLabel lblClave = new JLabel("Clave :");
 		lblClave.setBounds(10, 64, 102, 14);
 		contentPane.add(lblClave);
-		
+
 		txtClave = new JTextField();
 		txtClave.setColumns(10);
 		txtClave.setBounds(122, 61, 161, 20);
 		contentPane.add(txtClave);
-		
+
 	}
 
-	
 	private JTextField txtClave;
-	
-	
+
+
+
+	private String leerUsuario() {
+		if (!txtUsuario.getText().matches("[A-Za-z0-9_]+[@]+[a-z0-9]+[.][a-z]{2,3}")) {
+			JOptionPane.showMessageDialog(null, "Usuario no coincide");
+			return null;
+		}
+		return txtUsuario.getText();
+	}
+
 	void registrar() {
-		String usuario=txtUsuario.getText();
-		String clave=txtClave.getText();
+		String usuario = leerUsuario();
+		String clave = txtClave.getText();
+		
+		if(usuario==null || clave==null) {
+			return;
+		}
 		EntityManagerFactory fabrica = Persistence.createEntityManagerFactory("jpa_sesion01"); // CREAR LA CONEXION
 		EntityManager em = fabrica.createEntityManager();
 
@@ -99,15 +112,14 @@ public class FrmLogin extends JFrame {
 
 		String jpql = "SELECT u FROM Usuario u WHERE u.usr_usua= :xusr AND u.cla_usua= :xcla";
 		try {
-			Usuario u = em.createQuery(jpql, Usuario.class)
-					.setParameter("xusr", usuario)
-					.setParameter("xcla", clave)
+			Usuario u = em.createQuery(jpql, Usuario.class).setParameter("xusr", usuario).setParameter("xcla", clave)
 					.getSingleResult();
 
-			//Abrir ventana
-			FrmManteProd v=new FrmManteProd();
+			// Abrir ventana
+			FrmManteProd v = new FrmManteProd();
 			v.setVisible(true);
-			
+			dispose();
+
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			JOptionPane.showMessageDialog(null, "Usuario o clave incorrecto");
@@ -116,3 +128,5 @@ public class FrmLogin extends JFrame {
 		em.close();
 	}
 }
+
+

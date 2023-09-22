@@ -21,12 +21,12 @@ public class Demo2 {
 		//proceso
 		//update into tb_xx set campo =?,?,whee
 		
-		Usuario u = new Usuario(611,"ander", "rodriguez", "zbaca", "2403","2000/01/15",1,1, null);
+		//Usuario u = new Usuario(611,"ander", "rodriguez", "zbaca", "2403","2000/01/15",1,1, null);
 		//Usuario u = new Usuario(123,"carlos", "berrocal", "presi", "1234","2000/08/19",2,3);
 		
 		//ojo.... al reg/act/elim se tendra que usar transact begin y commit
 		em.getTransaction().begin();
-		em.merge(u);
+		//em.merge(u);
 		em.getTransaction().commit();
 		System.out.println("Actualizacion Ok");
 		
